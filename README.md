@@ -1,16 +1,39 @@
-# React + Vite
+# Beckers Brotsorten — Hofladen PWA
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Mobile Web-App fuer den Hofladen von Anna Becker. Kunden sehen taeglich welche Brotsorten verfuegbar sind und koennen bis 8 Uhr vorbestellen.
 
-Currently, two official plugins are available:
+## Features (MVP)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Kunden-Ansicht**: Brotsorten des Tages mit Mengenauswahl + Vorbestellung
+- **Betreiberin-Modus**: PIN-gesichert (1234) — Brotsorten verwalten, Bestellungen einsehen
+- **Bestellzeitraum**: Vorbestellungen nur bis 8:00 Uhr moeglich
+- **Bestellbestaetigung**: Modal mit Zusammenfassung nach Absenden
+- **PWA**: Installierbar auf iOS/Android, offline-faehig
 
-## React Compiler
+## Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- React 19 + Vite 8
+- CSS Custom Properties (kein Framework)
+- Service Worker (Cache-first)
+- localStorage fuer Datenhaltung (Prototyp)
 
-## Expanding the ESLint configuration
+## Lokale Entwicklung
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```bash
+npm install
+npm run dev
+```
+
+## Build
+
+```bash
+npm run build
+npm run preview
+```
+
+## Prototyp-Hinweise
+
+- PIN fuer Betreiberin-Modus: **1234**
+- Daten werden im localStorage gespeichert (nicht persistent zwischen Geraeten)
+- Preise sind Platzhalter
+- Admin-Modus: Header "Betreiberin" Button → PIN eingeben
