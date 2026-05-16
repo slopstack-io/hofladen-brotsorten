@@ -1,0 +1,608 @@
+:root {
+  --brown: #8B4513;
+  --brown-light: #A0522D;
+  --cream: #FFF8F0;
+  --cream-dark: #F5E6D3;
+  --gold: #D4A056;
+  --gold-light: #E8C078;
+  --text: #3E2723;
+  --text-light: #6D4C41;
+  --success: #4CAF50;
+  --danger: #E53935;
+  --radius: 12px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--cream);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100dvh;
+}
+
+#root {
+  min-height: 100dvh;
+}
+
+/* App Shell */
+.app {
+  max-width: 480px;
+  margin: 0 auto;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.header {
+  background: var(--brown);
+  color: white;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header h1 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.header h1 span {
+  font-size: 1.4rem;
+}
+
+.mode-toggle {
+  background: rgba(255,255,255,0.2);
+  border: none;
+  color: white;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.mode-toggle:active {
+  background: rgba(255,255,255,0.35);
+}
+
+/* Content */
+.content {
+  flex: 1;
+  padding: 16px;
+  padding-bottom: 80px;
+}
+
+/* Section */
+.section-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-light);
+  margin-bottom: 12px;
+}
+
+/* Date Bar */
+.date-bar {
+  background: white;
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.date-bar .date {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.date-bar .status {
+  font-size: 0.8rem;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+.status-open {
+  background: #E8F5E9;
+  color: #2E7D32;
+}
+
+.status-closed {
+  background: #FFEBEE;
+  color: #C62828;
+}
+
+/* Bread Card */
+.bread-card {
+  background: white;
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 10px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  transition: transform 0.15s;
+}
+
+.bread-card:active {
+  transform: scale(0.98);
+}
+
+.bread-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.bread-emoji {
+  font-size: 2rem;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--cream-dark);
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+
+.bread-info {
+  flex: 1;
+}
+
+.bread-name {
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.bread-desc {
+  font-size: 0.82rem;
+  color: var(--text-light);
+  margin-top: 2px;
+}
+
+.bread-price {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--brown);
+}
+
+/* Quantity Selector */
+.qty-selector {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 10px;
+  justify-content: flex-end;
+}
+
+.qty-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid var(--brown);
+  background: white;
+  color: var(--brown);
+  font-size: 1.2rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+}
+
+.qty-btn:active {
+  background: var(--brown);
+  color: white;
+}
+
+.qty-display {
+  font-size: 1.1rem;
+  font-weight: 700;
+  min-width: 24px;
+  text-align: center;
+}
+
+/* Order Button */
+.order-btn {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 480px;
+  width: 100%;
+  background: var(--brown);
+  color: white;
+  border: none;
+  padding: 16px 24px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  z-index: 50;
+  transition: background 0.2s;
+}
+
+.order-btn:active {
+  background: var(--brown-light);
+}
+
+.order-btn:disabled {
+  background: #BCAAA4;
+  cursor: not-allowed;
+}
+
+.order-count {
+  background: rgba(255,255,255,0.3);
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+}
+
+/* Order Confirmation Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fadeIn 0.2s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal {
+  background: white;
+  border-radius: 20px;
+  padding: 32px 24px;
+  max-width: 360px;
+  width: 100%;
+  text-align: center;
+  animation: slideUp 0.3s;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(30px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.modal .check-icon {
+  font-size: 3rem;
+  margin-bottom: 12px;
+}
+
+.modal h2 {
+  font-size: 1.3rem;
+  margin-bottom: 8px;
+}
+
+.modal p {
+  color: var(--text-light);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin-bottom: 6px;
+}
+
+.modal .order-details {
+  background: var(--cream);
+  border-radius: var(--radius);
+  padding: 14px;
+  margin: 16px 0;
+  text-align: left;
+}
+
+.modal .order-details .item {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 0;
+  font-size: 0.9rem;
+}
+
+.modal .order-total {
+  border-top: 1px solid var(--cream-dark);
+  padding-top: 8px;
+  margin-top: 8px;
+  font-weight: 700;
+  display: flex;
+  justify-content: space-between;
+}
+
+.modal .close-btn {
+  background: var(--brown);
+  color: white;
+  border: none;
+  padding: 12px 32px;
+  border-radius: 25px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 8px;
+}
+
+/* Admin Styles */
+.admin-panel {
+  padding-bottom: 20px;
+}
+
+.admin-section {
+  background: white;
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+.admin-section h3 {
+  font-size: 1rem;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.bread-admin-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 6px;
+  background: var(--cream);
+}
+
+.bread-admin-item .left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.bread-admin-item .emoji-sm {
+  font-size: 1.4rem;
+}
+
+.bread-admin-item .name {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.bread-admin-item .price-sm {
+  font-size: 0.85rem;
+  color: var(--text-light);
+}
+
+.toggle-btn {
+  width: 48px;
+  height: 28px;
+  border-radius: 14px;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  transition: background 0.2s;
+}
+
+.toggle-btn.active {
+  background: var(--success);
+}
+
+.toggle-btn.inactive {
+  background: #BDBDBD;
+}
+
+.toggle-btn::after {
+  content: '';
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: white;
+  top: 3px;
+  transition: left 0.2s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+.toggle-btn.active::after {
+  left: 23px;
+}
+
+.toggle-btn.inactive::after {
+  left: 3px;
+}
+
+/* Add Bread Form */
+.add-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.add-form input {
+  padding: 10px 14px;
+  border: 2px solid var(--cream-dark);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.add-form input:focus {
+  border-color: var(--brown);
+}
+
+.add-form .row {
+  display: flex;
+  gap: 8px;
+}
+
+.add-form .row input {
+  flex: 1;
+}
+
+.add-btn {
+  background: var(--brown);
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.add-btn:active {
+  background: var(--brown-light);
+}
+
+/* Orders List */
+.order-item {
+  background: var(--cream);
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 8px;
+}
+
+.order-item .customer {
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.order-item .time {
+  font-size: 0.8rem;
+  color: var(--text-light);
+}
+
+.order-item .items {
+  font-size: 0.85rem;
+  margin-top: 4px;
+  color: var(--text-light);
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-light);
+}
+
+.empty-state .emoji {
+  font-size: 3rem;
+  margin-bottom: 12px;
+}
+
+.empty-state p {
+  font-size: 0.95rem;
+}
+
+/* Closed Banner */
+.closed-banner {
+  background: #FFF3E0;
+  border: 2px solid #FFE0B2;
+  border-radius: var(--radius);
+  padding: 20px;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.closed-banner .emoji {
+  font-size: 2.5rem;
+  margin-bottom: 8px;
+}
+
+.closed-banner h3 {
+  color: var(--brown);
+  margin-bottom: 4px;
+}
+
+.closed-banner p {
+  font-size: 0.85rem;
+  color: var(--text-light);
+}
+
+/* Name Input */
+.name-input-section {
+  background: white;
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+.name-input-section label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-light);
+  margin-bottom: 6px;
+}
+
+.name-input-section input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 2px solid var(--cream-dark);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  outline: none;
+}
+
+.name-input-section input:focus {
+  border-color: var(--brown);
+}
+
+/* PIN */
+.pin-section {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pin-section input {
+  width: 100px;
+  padding: 8px 12px;
+  border: 2px solid var(--cream-dark);
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+.pin-section .pin-btn {
+  background: var(--brown);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.pin-wrong {
+  color: var(--danger);
+  font-size: 0.8rem;
+  margin-top: 4px;
+}
