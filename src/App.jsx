@@ -225,7 +225,7 @@ export default function App() {
                         <div className="bread-name">{bread.name}</div>
                         {bread.desc && <div className="bread-desc">{bread.desc}</div>}
                       </div>
-                      <div className="bread-price">{bread.price.toFixed(2)} EUR</div>
+                      <div className="bread-price">{(Number(bread.price) || 0).toFixed(2)} EUR</div>
                     </div>
                     <div className="qty-selector">
                       <button className="qty-btn" onClick={() => setQty(bread.id, (quantities[bread.id] || 0) - 1)}>−</button>
@@ -258,7 +258,7 @@ export default function App() {
                     <span className="emoji-sm">{bread.emoji}</span>
                     <div>
                       <div className="name">{bread.name}</div>
-                      <div className="price-sm">{bread.price.toFixed(2)} EUR — {bread.available ? 'verfügbar' : 'ausblenden'}</div>
+                      <div className="price-sm">{(Number(bread.price) || 0).toFixed(2)} EUR — {bread.available ? 'verfügbar' : 'ausblenden'}</div>
                     </div>
                   </div>
                   <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>

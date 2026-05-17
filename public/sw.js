@@ -34,6 +34,15 @@ self.addEventListener('fetch', (event) => {
         caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
         return response;
       })
-      .catch(() => caches.match(event.request).then(r => r || caches.match(`${BASE}/index.html`)))
+      .catch(() =>
+        caches.match(event.request).then((cached) => {
+          if (cached) return cached;
+          // Fallback: navigation requests to /hofladen/* → cached index
+          if (event.request.mode === 'navigate') {
+            return caches.match(`${BASE}/`);
+          }
+          return new Response('Offline', { status: 503 });
+        })
+      )
   );
 });
