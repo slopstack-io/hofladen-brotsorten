@@ -1,5 +1,5 @@
 const CACHE_NAME = 'hofladen-v1';
-const BASE = '/hofladen';
+const BASE = '';
 const STATIC_ASSETS = [
   `${BASE}/`,
   `${BASE}/manifest.json`,
@@ -37,7 +37,7 @@ self.addEventListener('fetch', (event) => {
       .catch(() =>
         caches.match(event.request).then((cached) => {
           if (cached) return cached;
-          // Fallback: navigation requests to /hofladen/* → cached index
+          // Fallback: navigation requests to / → cached index
           if (event.request.mode === 'navigate') {
             return caches.match(`${BASE}/`);
           }
