@@ -1,23 +1,28 @@
 {
-  "name": "Beckers Brotsorten",
-  "short_name": "Brotsorten",
-  "description": "Taegliche Brotsorten und Vorbestellungen vom Hofladen Becker",
-  "start_url": "/",
+  "name": "Hofladen Brotsorten",
+  "short_name": "Hofladen",
+  "description": "Tägliche Brotsorten und Vorbestellungen vom Hofladen",
+  "start_url": "/hofladen/",
   "display": "standalone",
-  "background_color": "#FFF8F0",
+  "background_color": "#FDF6E3",
   "theme_color": "#8B4513",
+  "orientation": "portrait",
   "icons": [
     {
-      "src": "bread-icon-192.png",
+      "src": "/hofladen/icons/icon-192.png",
       "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "type": "image/png"
     },
     {
-      "src": "bread-icon-512.png",
+      "src": "/hofladen/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/hofladen/icons/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "maskable"
     }
   ]
 }

@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="theme-color" content="#8B4513">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Hofladen">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <title>Hofladen — Brotsorten</title>
+  <style>
+    :root {
+      --brown: #8B4513;
+      --brown-light: #A0522D;
+      --cream: #FDF6E3;
+      --cream-dark: #F5E6C8;
+      --green: #4A7C59;
+      --green-light: #6B9E7A;
+      --red: #C0392B;
+      --text: #3E2723;
+      --text-light: #795548;
+      --shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Header */
+    .header {
+      background: var(--brown);
+      color: white;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .header-left { display: flex; align-items: center; gap: 10px; }
+    .header h1 { font-size: 1.2rem; font-weight: 700; }
+    .header .logo { font-size: 1.5rem; }
+
+    /* Mode Toggle */
+    .mode-toggle {
+      background: rgba(255,255,255,0.2);
+      border: none;
+      color: white;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .mode-toggle:active { background: rgba(255,255,255,0.3); }
+
+    /* Container */
+    .container {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+
+    /* Info Banner */
+    .info-banner {
+      background: var(--brown);
+      color: white;
+      padding: 12px 16px;
+      text-align: center;
+      font-size: 0.85rem;
+    }
+
+    /* Order Deadline Banner */
+    .deadline-banner {
+      background: linear-gradient(135deg, var(--green), var(--green-light));
+      color: white;
+      padding: 12px 16px;
+      text-align: center;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+    .deadline-banner.expired { background: var(--red); }
+
+    /* Section */
+    .section-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin: 20px 0 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Bread Card */
+    .bread-card {
+      background: white;
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 12px;
+      box-shadow: var(--shadow);
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      position: relative;
+    }
+    .bread-emoji {
+      font-size: 2.5rem;
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--cream);
+      border-radius: 12px;
+      flex-shrink: 0;
+    }
+    .bread-info { flex: 1; }
+    .bread-name { font-weight: 700; font-size: 1rem; margin-bottom: 2px; }
+    .bread-desc { font-size: 0.82rem; color: var(--text-light); margin-bottom: 6px; }
+    .bread-price { font-weight: 700; color: var(--brown); font-size: 0.95rem; }
+    .bread-available {
+      display: inline-block;
+      background: #E8F5E9;
+      color: var(--green);
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 10px;
+      margin-left: 6px;
+    }
+    .bread-unavailable {
+      display: inline-block;
+      background: #FFEBEE;
+      color: var(--red);
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 10px;
+      margin-left: 6px;
+    }
+
+    /* Quantity Selector */
+    .qty-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .qty-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 2px solid var(--brown);
+      background: white;
+      color: var(--brown);
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .qty-btn:active { background: var(--cream); }
+    .qty-btn:disabled { border-color: #ccc; color: #ccc; cursor: not-allowed; }
+    .qty-display {
+      font-weight: 700;
+      font-size: 1rem;
+      min-width: 24px;
+      text-align: center;
+    }
+
+    /* Order Summary */
+    .order-summary {
+      background: white;
+      border-radius: 16px;
+      padding: 16px;
+      margin: 20px 0;
+      box-shadow: var(--shadow);
+    }
+    .order-summary h3 { font-size: 1rem; margin-bottom: 10px; }
+    .order-item {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+      padding: 4px 0;
+      border-bottom: 1px solid var(--cream-dark);
+    }
+    .order-item:last-child { border: none; }
+    .order-total {
+      display: flex;
+      justify-content: space-between;
+      font-weight: 700;
+      font-size: 1rem;
+      padding-top: 8px;
+      margin-top: 4px;
+      border-top: 2px solid var(--brown);
+    }
+
+    /* Buttons */
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+    }
+    .btn-primary {
+      background: var(--brown);
+      color: white;
+    }
+    .btn-primary:active { background: var(--brown-light); }
+    .btn-primary:disabled { background: #ccc; cursor: not-allowed; }
+    .btn-secondary {
+      background: var(--cream-dark);
+      color: var(--text);
+    }
+    .btn-green {
+      background: var(--green);
+      color: white;
+    }
+    .btn-green:active { background: var(--green-light); }
+    .btn-red {
+      background: var(--red);
+      color: white;
+    }
+    .btn-outline {
+      background: white;
+      color: var(--brown);
+      border: 2px solid var(--brown);
+    }
+
+    /* Admin: Toggle */
+    .admin-toggle-item {
+      background: white;
+      border-radius: 12px;
+      padding: 12px 16px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: var(--shadow);
+    }
+    .admin-toggle-item .bread-name { margin: 0; }
+    .toggle-switch {
+      position: relative;
+      width: 48px;
+      height: 28px;
+    }
+    .toggle-switch input { opacity: 0; width: 0; height: 0; }
+    .toggle-slider {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: #ccc;
+      border-radius: 28px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .toggle-slider:before {
+      content: "";
+      position: absolute;
+      width: 22px;
+      height: 22px;
+      left: 3px;
+      bottom: 3px;
+      background: white;
+      border-radius: 50%;
+      transition: 0.3s;
+    }
+    .toggle-switch input:checked + .toggle-slider {
+      background: var(--green);
+    }
+    .toggle-switch input:checked + .toggle-slider:before {
+      transform: translateX(20px);
+    }
+
+    /* Order Form */
+    .form-group { margin-bottom: 14px; }
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--text-light);
+    }
+    .form-group input, .form-group textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 2px solid var(--cream-dark);
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      background: white;
+    }
+    .form-group input:focus, .form-group textarea:focus {
+      outline: none;
+      border-color: var(--brown);
+    }
+
+    /* Success Overlay */
+    .overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+    }
+    .success-card {
+      background: white;
+      border-radius: 20px;
+      padding: 32px 24px;
+      max-width: 340px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    }
+    .success-card .emoji { font-size: 3rem; margin-bottom: 12px; }
+    .success-card h2 { font-size: 1.3rem; margin-bottom: 8px; }
+    .success-card p { color: var(--text-light); font-size: 0.9rem; margin-bottom: 16px; }
+
+    /* Order List (Admin) */
+    .admin-order {
+      background: white;
+      border-radius: 12px;
+      padding: 12px 16px;
+      margin-bottom: 8px;
+      box-shadow: var(--shadow);
+    }
+    .admin-order .order-name { font-weight: 700; }
+    .admin-order .order-items { font-size: 0.85rem; color: var(--text-light); margin-top: 4px; }
+    .admin-order .order-time { font-size: 0.75rem; color: var(--text-light); margin-top: 4px; }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      background: white;
+      border-radius: 12px;
+      margin-bottom: 16px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    .tab {
+      flex: 1;
+      padding: 10px;
+      text-align: center;
+      font-size: 0.85rem;
+      font-weight: 600;
+      border: none;
+      background: white;
+      color: var(--text-light);
+      cursor: pointer;
+    }
+    .tab.active {
+      background: var(--brown);
+      color: white;
+    }
+
+    /* Install hint */
+    .install-hint {
+      text-align: center;
+      padding: 12px;
+      font-size: 0.8rem;
+      color: var(--text-light);
+    }
+    .install-hint a {
+      color: var(--brown);
+      text-decoration: underline;
+    }
+
+    /* Hidden */
+    .hidden { display: none !important; }
+
+    /* Empty state */
+    .empty-state {
+      text-align: center;
+      padding: 32px 16px;
+      color: var(--text-light);
+    }
+    .empty-state .emoji { font-size: 3rem; margin-bottom: 12px; }
+  </style>
+</head>
+<body>
+  <!-- Customer View -->
+  <div id="customer-view">
+    <div class="header">
+      <div class="header-left">
+        <span class="logo">🍞</span>
+        <h1>Hofladen Becker</h1>
+      </div>
+      <button class="mode-toggle" onclick="switchToAdmin()">Betreiber-Modus</button>
+    </div>
+    <div class="info-banner">
+      🕐 Heute bestellt — morgen frisch abholbereit!
+    </div>
+    <div id="deadline-banner" class="deadline-banner">
+      ⏰ Vorbestellungen bis 8:00 Uhr möglich
+    </div>
+
+    <div class="container">
+      <div class="section-title">🥖 Heutige Brotsorten</div>
+      <div id="bread-list"></div>
+
+      <div id="order-section">
+        <div class="section-title">📝 Vorbestellung</div>
+        <div class="order-summary" id="order-summary">
+          <h3>Deine Auswahl</h3>
+          <div id="order-items"></div>
+          <div class="order-total">
+            <span>Gesamt</span>
+            <span id="order-total-price">0,00 €</span>
+          </div>
+        </div>
+
+        <div id="order-form">
+          <div class="form-group">
+            <label for="customer-name">Dein Name *</label>
+            <input type="text" id="customer-name" placeholder="Max Mustermann" required>
+          </div>
+          <div class="form-group">
+            <label for="customer-phone">Telefonnummer</label>
+            <input type="tel" id="customer-phone" placeholder="0171 1234567">
+          </div>
+          <div class="form-group">
+            <label for="customer-note">Anmerkung</label>
+            <textarea id="customer-note" rows="2" placeholder="z.B. bitte in Scheiben schneiden"></textarea>
+          </div>
+          <button class="btn btn-primary" id="submit-order" onclick="submitOrder()" disabled>
+            Vorbestellung absenden
+          </button>
+        </div>
+      </div>
+
+      <div class="install-hint">
+        <a href="/hofladen/install.html">📱 App auf dem Handy installieren</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Admin View -->
+  <div id="admin-view" class="hidden">
+    <div class="header">
+      <div class="header-left">
+        <span class="logo">👩‍🌾</span>
+        <h1>Betreiber-Ansicht</h1>
+      </div>
+      <button class="mode-toggle" onclick="switchToCustomer()">Kunden-Ansicht</button>
+    </div>
+
+    <div class="container">
+      <div class="tabs">
+        <button class="tab active" onclick="showAdminTab('breads')">Brotsorten</button>
+        <button class="tab" onclick="showAdminTab('orders')">Bestellungen</button>
+      </div>
+
+      <!-- Breads Management -->
+      <div id="admin-breads">
+        <div class="section-title">🥖 Sortiment verwalten</div>
+        <p style="font-size:0.85rem; color:var(--text-light); margin-bottom:12px;">
+          Schalte Brotsorten ein/aus um das heutige Angebot zu aktualisieren.
+        </p>
+        <div id="admin-bread-list"></div>
+      </div>
+
+      <!-- Orders Management -->
+      <div id="admin-orders" class="hidden">
+        <div class="section-title">📋 Heutige Bestellungen</div>
+        <div id="admin-order-list"></div>
+        <button class="btn btn-outline" onclick="clearOrders()" style="margin-top:16px;">
+          Alle Bestellungen löschen
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Success Overlay -->
+  <div id="success-overlay" class="overlay hidden">
+    <div class="success-card">
+      <div class="emoji">✅</div>
+      <h2>Bestellung aufgegeben!</h2>
+      <p>Deine Vorbestellung wurde gespeichert. Du kannst die Brote morgen im Hofladen abholen.</p>
+      <p id="success-name" style="font-weight:700; color:var(--brown);"></p>
+      <button class="btn btn-primary" onclick="closeSuccess()">Verstanden!</button>
+    </div>
+  </div>
+
+  <script>
+    // === DATA ===
+    const BREADS = [
+      { id: 1, name: 'Bauernbrot', emoji: '🍞', desc: 'Kräftiges Roggenmischbrot, traditionell im Steinofen gebacken', price: 3.50, available: true },
+      { id: 2, name: 'Sonnenblumenbrot', emoji: '🌻', desc: 'Saftig mit Sonnenblumenkernen, leicht nussig', price: 3.80, available: true },
+      { id: 3, name: 'Dinkelvollkornbrot', emoji: '🌾', desc: 'Gesundes Vollkornbrot aus Dinkel, lange gesäuert', price: 4.20, available: true },
+      { id: 4, name: 'Roggenbrot', emoji: '🥖', desc: 'Reines Roggenbrot, kräftig und aromatisch', price: 3.20, available: false },
+      { id: 5, name: 'Kürbiskernbrot', emoji: '🎃', desc: 'Mit gerösteten Kürbiskernen, saftiger Teig', price: 4.00, available: true },
+      { id: 6, name: 'Weißbrot', emoji: '🥪', desc: 'Fluffiges Weißbrot, perfekt für Frühstück', price: 2.80, available: true },
+      { id: 7, name: 'Schwarzbrot', emoji: '🖤', desc: 'Westfälisches Schwarzbrot, kräftig und lange haltbar', price: 3.60, available: false },
+      { id: 8, name: 'Walnussbrot', emoji: '🥜', desc: 'Mit gehackten Walnüssen, edler Geschmack', price: 4.50, available: true },
+      { id: 9, name: 'Brötchen (6er Pack)', emoji: '🥯', desc: 'Knusprige Brötchen, frisch aus dem Ofen', price: 2.50, available: true },
+      { id: 10, name: 'Croissants (4er Pack)', emoji: '🥐', desc: 'Butter-Croissants, blättrig und goldbraun', price: 4.80, available: true },
+    ];
+
+    let quantities = {};
+    let orders = [];
+
+    // === INIT ===
+    function init() {
+      // Load state from localStorage
+      const savedBreads = localStorage.getItem('hofladen-breads');
+      if (savedBreads) {
+        const parsed = JSON.parse(savedBreads);
+        parsed.forEach(s => {
+          const bread = BREADS.find(b => b.id === s.id);
+          if (bread) bread.available = s.available;
+        });
+      }
+
+      const savedOrders = localStorage.getItem('hofladen-orders');
+      if (savedOrders) orders = JSON.parse(savedOrders);
+
+      BREADS.forEach(b => { quantities[b.id] = 0; });
+
+      checkDeadline();
+      renderCustomerView();
+    }
+
+    // === DEADLINE CHECK ===
+    function checkDeadline() {
+      const now = new Date();
+      const hour = now.getHours();
+      const banner = document.getElementById('deadline-banner');
+      const form = document.getElementById('order-form');
+      const submitBtn = document.getElementById('submit-order');
+
+      if (hour >= 8) {
+        banner.textContent = '⏰ Bestellzeitraum beendet — nächste Bestellung morgen ab 6:00 Uhr';
+        banner.classList.add('expired');
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Bestellzeit beendet';
+      }
+    }
+
+    // === RENDER CUSTOMER ===
+    function renderCustomerView() {
+      renderBreadList();
+      updateOrderSummary();
+    }
+
+    function renderBreadList() {
+      const list = document.getElementById('bread-list');
+      list.innerHTML = BREADS.map(b => `
+        <div class="bread-card ${!b.available ? 'opacity: 0.5' : ''}">
+          <div class="bread-emoji">${b.emoji}</div>
+          <div class="bread-info">
+            <div class="bread-name">
+              ${b.name}
+              ${b.available
+                ? '<span class="bread-available">Verfügbar</span>'
+                : '<span class="bread-unavailable">Nicht heute</span>'
+              }
+            </div>
+            <div class="bread-desc">${b.desc}</div>
+            <div class="bread-price">${b.price.toFixed(2).replace('.', ',')} €</div>
+            ${b.available ? `
+              <div class="qty-row">
+                <button class="qty-btn" onclick="changeQty(${b.id}, -1)" ${quantities[b.id] <= 0 ? 'disabled' : ''}>−</button>
+                <span class="qty-display">${quantities[b.id]}</span>
+                <button class="qty-btn" onclick="changeQty(${b.id}, 1)">+</button>
+              </div>
+            ` : ''}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function changeQty(id, delta) {
+      quantities[id] = Math.max(0, (quantities[id] || 0) + delta);
+      renderBreadList();
+      updateOrderSummary();
+    }
+
+    function updateOrderSummary() {
+      const items = document.getElementById('order-items');
+      const totalPrice = document.getElementById('order-total-price');
+      const submitBtn = document.getElementById('submit-order');
+      const orderSection = document.getElementById('order-section');
+
+      const selected = BREADS.filter(b => quantities[b.id] > 0 && b.available);
+
+      if (selected.length === 0) {
+        orderSection.style.display = 'none';
+        return;
+      }
+
+      orderSection.style.display = 'block';
+      let total = 0;
+
+      items.innerHTML = selected.map(b => {
+        const lineTotal = b.price * quantities[b.id];
+        total += lineTotal;
+        return `
+          <div class="order-item">
+            <span>${quantities[b.id]}× ${b.name}</span>
+            <span>${lineTotal.toFixed(2).replace('.', ',')} €</span>
+          </div>
+        `;
+      }).join('');
+
+      totalPrice.textContent = total.toFixed(2).replace('.', ',') + ' €';
+      
+      const now = new Date();
+      const canOrder = now.getHours() < 8;
+      submitBtn.disabled = !canOrder;
+    }
+
+    // === SUBMIT ORDER ===
+    function submitOrder() {
+      const name = document.getElementById('customer-name').value.trim();
+      if (!name) {
+        alert('Bitte gib deinen Namen ein.');
+        return;
+      }
+
+      const selected = BREADS.filter(b => quantities[b.id] > 0 && b.available);
+      if (selected.length === 0) return;
+
+      const order = {
+        id: Date.now(),
+        name: name,
+        phone: document.getElementById('customer-phone').value.trim(),
+        note: document.getElementById('customer-note').value.trim(),
+        items: selected.map(b => ({ name: b.name, qty: quantities[b.id], price: b.price })),
+        total: selected.reduce((sum, b) => sum + b.price * quantities[b.id], 0),
+        time: new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' }),
+        date: new Date().toLocaleDateString('de-DE'),
+      };
+
+      orders.push(order);
+      localStorage.setItem('hofladen-orders', JSON.stringify(orders));
+
+      // Reset
+      BREADS.forEach(b => { quantities[b.id] = 0; });
+      document.getElementById('customer-name').value = '';
+      document.getElementById('customer-phone').value = '';
+      document.getElementById('customer-note').value = '';
+
+      // Show success
+      document.getElementById('success-name').textContent = `${name} — ${order.total.toFixed(2).replace('.', ',')} €`;
+      document.getElementById('success-overlay').classList.remove('hidden');
+
+      renderCustomerView();
+    }
+
+    function closeSuccess() {
+      document.getElementById('success-overlay').classList.add('hidden');
+    }
+
+    // === ADMIN ===
+    function switchToAdmin() {
+      document.getElementById('customer-view').classList.add('hidden');
+      document.getElementById('admin-view').classList.remove('hidden');
+      renderAdminView();
+    }
+
+    function switchToCustomer() {
+      document.getElementById('admin-view').classList.add('hidden');
+      document.getElementById('customer-view').classList.remove('hidden');
+      renderCustomerView();
+    }
+
+    function showAdminTab(tab) {
+      document.querySelectorAll('.tab').forEach((t, i) => {
+        t.classList.toggle('active', (tab === 'breads' && i === 0) || (tab === 'orders' && i === 1));
+      });
+      document.getElementById('admin-breads').classList.toggle('hidden', tab !== 'breads');
+      document.getElementById('admin-orders').classList.toggle('hidden', tab !== 'orders');
+      if (tab === 'orders') renderAdminOrders();
+    }
+
+    function renderAdminView() {
+      renderAdminBreads();
+      renderAdminOrders();
+    }
+
+    function renderAdminBreads() {
+      const list = document.getElementById('admin-bread-list');
+      list.innerHTML = BREADS.map(b => `
+        <div class="admin-toggle-item">
+          <div>
+            <span style="font-size:1.3rem; margin-right:6px;">${b.emoji}</span>
+            <span class="bread-name">${b.name} — ${b.price.toFixed(2).replace('.', ',')} €</span>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" ${b.available ? 'checked' : ''} onchange="toggleBread(${b.id}, this.checked)">
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+      `).join('');
+    }
+
+    function toggleBread(id, available) {
+      const bread = BREADS.find(b => b.id === id);
+      if (bread) {
+        bread.available = available;
+        localStorage.setItem('hofladen-breads', JSON.stringify(BREADS.map(b => ({ id: b.id, available: b.available }))));
+      }
+    }
+
+    function renderAdminOrders() {
+      const list = document.getElementById('admin-order-list');
+      if (orders.length === 0) {
+        list.innerHTML = `
+          <div class="empty-state">
+            <div class="emoji">📭</div>
+            <p>Noch keine Bestellungen heute</p>
+          </div>
+        `;
+        return;
+      }
+
+      list.innerHTML = orders.map(o => `
+        <div class="admin-order">
+          <div class="order-name">${o.name} ${o.phone ? '— ' + o.phone : ''}</div>
+          <div class="order-items">
+            ${o.items.map(i => `${i.qty}× ${i.name} (${(i.price * i.qty).toFixed(2).replace('.', ',')} €)`).join(' · ')}
+          </div>
+          ${o.note ? `<div class="order-items" style="color:var(--brown);">📝 ${o.note}</div>` : ''}
+          <div class="order-time">⏰ ${o.time} · ${o.date} · Gesamt: ${o.total.toFixed(2).replace('.', ',')} €</div>
+        </div>
+      `).join('');
+    }
+
+    function clearOrders() {
+      if (confirm('Alle Bestellungen löschen?')) {
+        orders = [];
+        localStorage.setItem('hofladen-orders', JSON.stringify(orders));
+        renderAdminOrders();
+      }
+    }
+
+    // === SERVICE WORKER ===
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js').catch(() => {});
+    }
+
+    // === START ===
+    init();
+  </script>
+</body>
+</html>

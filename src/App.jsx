@@ -72,8 +72,9 @@ export default function App() {
   const [newBread, setNewBread] = useState({ name: '', price: '', emoji: '🍞', desc: '' })
   const addBread = useCallback(() => {
     if (!newBread.name || !newBread.price) return
+    if (isNaN(parseFloat(newBread.price))) return alert('Bitte gib einen gültigen Preis ein.')
     const bread = {
-      id: Date.now().toString(),
+      id: crypto.randomUUID(),
       name: newBread.name,
       emoji: newBread.emoji || '🍞',
       price: parseFloat(newBread.price),
@@ -107,7 +108,7 @@ export default function App() {
       .map(b => ({ name: b.name, qty: quantities[b.id], price: b.price }))
 
     const order = {
-      id: Date.now().toString(),
+      id: crypto.randomUUID(),
       date: todayKey,
       customer: customerName.trim(),
       items,
@@ -174,7 +175,7 @@ export default function App() {
                 />
                 <button className="pin-btn" onClick={handlePinSubmit}>OK</button>
               </div>
-              {pinError && <div className="pin-wrong">Falsche PIN. Der PIN für den Prototyp ist 1234.</div>}
+              {pinError && <div className="pin-wrong">Falsche PIN. Bitte versuche es erneut.</div>}
               <button className="mode-toggle" style={{ marginTop: 16, color: 'var(--brown)', background: 'var(--cream)' }} onClick={() => setMode('customer')}>
                 Zurück
               </button>

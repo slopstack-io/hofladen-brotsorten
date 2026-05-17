@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="theme-color" content="#8B4513">
+  <title>App installieren — Hofladen Brotsorten</title>
+  <style>
+    :root {
+      --brown: #8B4513;
+      --brown-light: #A0522D;
+      --cream: #FDF6E3;
+      --cream-dark: #F5E6C8;
+      --green: #4A7C59;
+      --text: #3E2723;
+      --text-light: #795548;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+    .header {
+      background: var(--brown);
+      color: white;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .header a { color: white; text-decoration: none; display: flex; align-items: center; gap: 10px; }
+    .header h1 { font-size: 1.2rem; font-weight: 700; }
+    .container { max-width: 480px; margin: 0 auto; padding: 16px; }
+    h1 { font-size: 1.5rem; font-weight: 700; margin-bottom: 8px; margin-top: 16px; }
+    .subtitle { color: var(--text-light); margin-bottom: 24px; font-size: 0.95rem; }
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .card h2 { font-size: 1.1rem; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+    .step {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .step-num {
+      background: var(--brown);
+      color: white;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .step-text strong { display: block; margin-bottom: 2px; }
+    .step-text span { font-size: 0.85rem; color: var(--text-light); }
+    .tip-card {
+      background: linear-gradient(135deg, var(--green), #5C8A6B);
+      color: white;
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+    .tip-card h3 { font-size: 1rem; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+    .tip-card ul { list-style: none; font-size: 0.9rem; }
+    .tip-card ul li { padding: 4px 0; }
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      background: var(--brown);
+      color: white;
+      margin-top: 16px;
+    }
+    .btn:active { background: var(--brown-light); }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <a href="index.html">
+      <span style="font-size:1.5rem">🍞</span>
+      <h1>Hofladen Becker</h1>
+    </a>
+  </div>
+
+  <div class="container">
+    <h1>📱 App installieren</h1>
+    <p class="subtitle">Der Hofladen ist eine Web-App — du kannst ihn wie eine echte App auf deinem Handy installieren, ohne App Store!</p>
+
+    <div class="card">
+      <h2><span style="font-size:1.5rem">🍎</span> iPhone / iPad (Safari)</h2>
+      <div class="step">
+        <span class="step-num">1</span>
+        <div class="step-text">
+          <strong>Öffne die Seite in Safari</strong>
+          <span>Öffne den Hofladen-Link in Safari auf deinem iPhone.</span>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-num">2</span>
+        <div class="step-text">
+          <strong>Tippe auf das Teilen-Symbol</strong>
+          <span>Das Quadrat mit dem Pfeil nach oben 📤 unten in der Mitte.</span>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-num">3</span>
+        <div class="step-text">
+          <strong>Wähle "Zum Home-Bildschirm"</strong>
+          <span>Scrolle in der Teilen-Leiste nach unten.</span>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-num">4</span>
+        <div class="step-text">
+          <strong>Tippe auf "Hinzufügen"</strong>
+          <span>Die App erscheint auf deinem Home-Bildschirm. Fertig! 🎉</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2><span style="font-size:1.5rem">🤖</span> Android (Chrome)</h2>
+      <div class="step">
+        <span class="step-num">1</span>
+        <div class="step-text">
+          <strong>Öffne die Seite in Chrome</strong>
+          <span>Öffne den Hofladen-Link in Google Chrome.</span>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-num">2</span>
+        <div class="step-text">
+          <strong>Tippe auf das Menü (⋮)</strong>
+          <span>Oben rechts: die drei Punkte.</span>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-num">3</span>
+        <div class="step-text">
+          <strong>Wähle "App installieren"</strong>
+          <span>Oder "Zum Startbildschirm hinzufügen".</span>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-num">4</span>
+        <div class="step-text">
+          <strong>Bestätige mit "Installieren"</strong>
+          <span>Die App ist jetzt auf deinem Startbildschirm. 🎉</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tip-card">
+      <h3>💡 Gut zu wissen</h3>
+      <ul>
+        <li>• Kein App Store nötig — direkte Installation</li>
+        <li>• Funktioniert offline nach der ersten Nutzung</li>
+        <li>• Sieht aus wie eine echte App</li>
+        <li>• Immer aktuell — keine Updates nötig</li>
+      </ul>
+    </div>
+
+    <a href="index.html" class="btn">Zurück zum Hofladen 🍞</a>
+  </div>
+</body>
+</html>
